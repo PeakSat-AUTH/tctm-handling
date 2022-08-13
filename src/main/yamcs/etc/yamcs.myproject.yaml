@@ -13,6 +13,10 @@ services:
       name: realtime
       type: realtime
   - class: org.yamcs.archive.CommandHistoryRecorder
+  - class: org.yamcs.replication.ReplicationMaster
+    args:
+      tcpRole: server
+      streams: ["tm_realtime"]
   - class: org.yamcs.parameterarchive.ParameterArchive
     args:
       realtimeFiller:

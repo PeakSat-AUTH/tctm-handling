@@ -20,32 +20,41 @@ services:
       backFiller:
         enabled: false
         warmupTime: 60
+  
+#Place the IP adress of the master-instnace server in the "masterHost:" option         
+  - class: org.yamcs.replication.ReplicationSlave
+    args:
+      tcpRole: client
+      enableTls: false
+      masterHost: 192.168.2.6 # IP adress of master server
+      masterPort: 8099
+      masterInstance: myproject
+      streams: ["tm_realtime"]
+      reconnectionIntervalSec: 30
+      #timeoutSec: 100
+      lastTxFile: "slave-lastid.txt"
 
 dataLinks:
-  - name: CAN-bus
-    class: org.yamcs.tctm.UdpTmDataLink
-    stream: tm_realtime
-    port: 10017
-    packetPreprocessorClassName: com.example.myproject.MyPacketPreprocessor
+  #- name: udp-in
+   # class: org.yamcs.tctm.UdpTmDataLink
+    #stream: tm_realtime
+    #port: 10015
+    #packetPreprocessorClassName: com.example.myproject.MyPacketPreprocessor
+  
+  - name: dump
+    class: org.yamcs.tctm.TcpTmDataLink
+    enableAtStartup: true
+    steam: tm_dump
+    host: 192.168.2.6
+    port: 8099
+    initialDelay: 2000 
 
-  - name: ADCS-UART
-    class: org.yamcs.tctm.UdpTmDataLink
-    stream: tm_realtime
-    port: 10016
-    packetPreprocessorClassName: com.example.myproject.MyPacketPreprocessor
-
-  - name: OBC-UART
-    class: org.yamcs.tctm.UdpTmDataLink
-    stream: tm_realtime
-    port: 10015
-    packetPreprocessorClassName: com.example.myproject.MyPacketPreprocessor
-
-  - name: udp-out
-    class: org.yamcs.tctm.UdpTcDataLink
-    stream: tc_realtime
-    host: localhost
-    port: 10025
-    commandPostprocessorClassName: com.example.myproject.MyCommandPostprocessor
+ # - name: udp-out
+  #  class: org.yamcs.tctm.UdpTcDataLink
+   # stream: tc_realtime
+    #host: localhost
+    #port: 10025
+    #commandPostprocessorClassName: com.example.myproject.MyCommandPostprocessor
 
 mdb:
   # Configuration of the active loaders

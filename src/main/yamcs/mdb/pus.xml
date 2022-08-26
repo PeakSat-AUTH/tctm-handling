@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xtce:SpaceSystem name="pus" xmlns:xtce="http://www.omg.org/space/xtce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/space/xtce /home/konkapo/OPS/xtcetools/src/main/resources/org/omg/space/xtce/schema/SpaceSystemV1.2-27Feb2014-mods.xsd" shortDescription="This is a bogus satellite telemetry and telecommand database." operationalStatus="unittest">
-        
+<xtce:SpaceSystem name="pus" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" shortDescription="This is a bogus satellite telemetry and telecommand database." operationalStatus="unittest">
+
     <xtce:TelemetryMetaData>
         
         <xtce:ParameterSet>
@@ -36,11 +36,6 @@
                 <xtce:LongDescription>Each application process shall set the destination ID field of each
                     telemetry packet it generates to the application process user identifier of
                     the application process addressed by the related report</xtce:LongDescription>
-            </xtce:Parameter>
-
-            <xtce:Parameter name="time2" parameterTypeRef="/dt/time_conv">
-                <xtce:LongDescription>Each application process shall set the time field of each telemetry packet
-                    it generates to the time tag of the related report.</xtce:LongDescription>
             </xtce:Parameter>
 
             <xtce:Parameter name="time" parameterTypeRef="/dt/generation_time">
@@ -374,6 +369,7 @@
                     <xtce:BaseContainer containerRef="packet_primary_header_TC" />
                 </xtce:CommandContainer>
             </xtce:MetaCommand>
+ 
 
             <xtce:MetaCommand name="create_a_parameter_report_structure">
                 <xtce:BaseMetaCommand metaCommandRef="Header_TC">
@@ -483,23 +479,6 @@
                 </xtce:CommandContainer>
             </xtce:MetaCommand>
 
-            <xtce:MetaCommand name="insert_activity_into_time_based_schedule">
-                <xtce:BaseMetaCommand metaCommandRef="Header_TC">
-                    <xtce:ArgumentAssignmentList>
-                        <xtce:ArgumentAssignment argumentName="service_type_ID" argumentValue="11" />
-                        <xtce:ArgumentAssignment argumentName="message_subtype_ID" argumentValue="4" />
-                    </xtce:ArgumentAssignmentList>
-                </xtce:BaseMetaCommand>
-                <xtce:ArgumentList>
-                    <xtce:Argument argumentTypeRef="/dt/release_time_calendar" name="release_time" />
-                </xtce:ArgumentList>
-                <xtce:CommandContainer name="insert_activity_into_time_based_schedule">
-                    <xtce:EntryList>
-                        <xtce:ArgumentRefEntry argumentRef="release_time" />
-                    </xtce:EntryList>
-                    <xtce:BaseContainer containerRef="Header_TC" />
-                </xtce:CommandContainer>
-            </xtce:MetaCommand>
 
             <xtce:MetaCommand name="are_you_alive_connection">
                 <xtce:BaseMetaCommand metaCommandRef="Header_TC">

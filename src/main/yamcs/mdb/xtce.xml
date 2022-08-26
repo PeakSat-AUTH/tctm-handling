@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xtce:SpaceSystem name="AcubeSAT" xmlns:xtce="http://www.omg.org/space/xtce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/space/xtce /home/konkapo/OPS/xtcetools/src/main/resources/org/omg/space/xtce/schema/SpaceSystemV1.2-27Feb2014-mods.xsd" shortDescription="This is a bogus satellite telemetry and telecommand database." operationalStatus="unittest">
+<xtce:SpaceSystem name="AcubeSAT" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd" shortDescription="This is a bogus satellite telemetry and telecommand database." operationalStatus="unittest">
 
     <xtce:TelemetryMetaData>
     
@@ -32,7 +32,18 @@
             <xtce:Parameter parameterTypeRef="/dt/float_t" name="mcuTemperature"></xtce:Parameter>    
             <xtce:Parameter parameterTypeRef="/dt/float_t" name="obcMCUTemperature"></xtce:Parameter>   
             <xtce:Parameter parameterTypeRef="/dt/float_t" name="obdhBoardTemperature1"></xtce:Parameter>   
-            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obdhBoardTemperature2"></xtce:Parameter>   
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obdhBoardTemperature2"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/uint32_t" name="obcMCUBootCounter"></xtce:Parameter> 
+            <xtce:Parameter parameterTypeRef="/dt/uint32_t" name="obcMCUSysTick"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/uint32_t" name="obcOnBoardTime"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/partition_ID" name="obcNANDCurrentlyUsedMemoryPartition"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="CANbus1Load"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="CANbus2Load"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/activeCAN_ID" name="activeCAN"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obcNANDFLASHLCLThreshold"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obcMRAMLCLThreshold"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obcNANDFLASHON"></xtce:Parameter>
+            <xtce:Parameter parameterTypeRef="/dt/float_t" name="obcMRAMON"></xtce:Parameter>
 
             <xtce:Parameter parameterTypeRef="/dt/uint8_t" name="magnetometerRawX"></xtce:Parameter>
             <xtce:Parameter parameterTypeRef="/dt/uint8_t" name="magnetometerRawY"></xtce:Parameter> 

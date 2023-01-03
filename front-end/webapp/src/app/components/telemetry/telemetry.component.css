@@ -1,0 +1,10 @@
+mat-cell { 
+    color:#d59306; 
+    font-size:15px; 
+} 
+.mat-table {
+    min-width: auto !important;
+    width: 100% !important;
+    
+}
+

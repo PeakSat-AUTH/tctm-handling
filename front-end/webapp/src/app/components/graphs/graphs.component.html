@@ -1,0 +1,6 @@
+
+<div [hidden]="!showGraphs">
+    <div appAddGraph></div> 
+    <div appArchiveGraph></div> 
+</div>
+<div *ngIf="!showGraphs" appArchiveTelemetry></div>

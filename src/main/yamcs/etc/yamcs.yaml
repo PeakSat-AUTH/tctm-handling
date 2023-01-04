@@ -19,5 +19,5 @@ instances:
 secretKey: changeme
 
 yamcs-web:
-  staticRoot: "/yamcs-instance/front-end/webapp/dist"
+  staticRoot: "/yamcs-instance/front-end/webapp/dist/opsmci/"
 

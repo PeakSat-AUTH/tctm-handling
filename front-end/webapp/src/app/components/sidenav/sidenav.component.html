@@ -1,14 +1,14 @@
 <mat-drawer-container  autosize>
   <div class="sidebar close">
     
-    <div class="sidebarBtn" routerLink="/graphs" routerLinkActive >
+    <div class="sidebarBtn">
       <i class='bx bx-menu' ></i>
       <span class="text" >Dashboard</span>
     </div>
   
     <ul class="nav-links">
 
-      <li *ngFor="let fileName of fileNames"> 
+      <li *ngFor="let fileName of fileNames" routerLink="/graphs"> 
         <div class="iocn-link">
           <a>
             <i class='bx bx-collection' ></i>
@@ -26,7 +26,7 @@
       </li>
 
       <li>
-      <div class="iocn-link">
+      <div class="iocn-link" routerLink="/graphs">
         <a >
           
            <i class='bx bx-collection' ></i> 
@@ -39,14 +39,13 @@
       <ul class="sub-menu">
         
         <li>
-          <button title="Archive"  mat-button color="orange" (click)="changeView(false)">
+          <button title="Archive"  mat-button color="orange" routerLink="/archive-telemetry">
             Archive
           </button>
         </li>
       </ul>
 
-      </li>
-      <!-- <li>
+      <li>
         <div class="iocn-link">
           <a>
             <i class='bx bx-collection' ></i>
@@ -56,13 +55,12 @@
         </div>
         <ul class="sub-menu">
           <li>
-            <button mat-button title="Telemetry Table" color="orange" routerLink="/telemetry" routerLinkActive>
+            <button mat-button title="Telemetry Table" color="orange" routerLink="/telemetry-table">
               Telemetry Table
             </button>
           </li>
         </ul>
-        
-      </li> -->
+      </li>
       
     
       <!--- Dummy data.  --->

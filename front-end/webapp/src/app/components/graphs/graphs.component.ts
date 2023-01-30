@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DataserviceService } from 'src/app/services/dataservice.service';
 import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
@@ -10,9 +9,8 @@ import { WebsocketService } from '../../services/websocket.service';
 
 export class GraphsComponent implements OnInit {
 
-  showGraphs: boolean = true;
 
-  constructor(private dataservice:DataserviceService, private wss: WebsocketService) { }
+  constructor(private wss: WebsocketService) { }
 
 
   /**
@@ -20,8 +18,7 @@ export class GraphsComponent implements OnInit {
   * Changes from graph view to archive telemetry view.
   */
   ngOnInit(): void {
-    this.wss.listen();  
-    this.dataservice.currentNgIF.subscribe((ngif) => this.showGraphs = ngif);
+    this.wss.listen();
   }
 
 }

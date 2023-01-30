@@ -1,11 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import { ListParametersResponse} from 'src/app/ListParameterResponse';
+import { ListParametersResponse} from 'src/app/Interfaces/ListParameterResponse';
 import { WebsocketService } from 'src/app/services/websocket.service';
-import { DataserviceService } from 'src/app/services/dataservice.service';
 import { HttpService } from 'src/app/services/http.service';
 import { lastValueFrom } from 'rxjs';
 import { SharedgraphserviceService } from 'src/app/services/sharedgraphservice.service';
-import { createdRealTimeGraphsQualifiedNames, qualifiedParameterNames } from 'src/app/GraphData';
+import { createdRealTimeGraphsQualifiedNames, parameterNames } from 'src/app/Interfaces/GraphData';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -18,15 +17,14 @@ export class SidenavComponent implements OnInit{
   fileNames: string[] = [] //stores the file names dynamically
   parameterNames: string[] = [];
 
-  constructor(private dataService: DataserviceService,
-              private httpService: HttpService,
-              private wss: WebsocketService, 
-              private sharedService: SharedgraphserviceService,
-              private notifService: NotificationService) {
+  constructor( private httpService: HttpService,
+    private wss: WebsocketService, 
+    private sharedService: SharedgraphserviceService,
+    private notifService: NotificationService) {
     
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit(): void{
     setTimeout(() => {
     let arrow = document.querySelectorAll(".arrow") as NodeListOf<Element>;
     for (let i = 0; i < arrow.length; i++) {
@@ -41,14 +39,14 @@ export class SidenavComponent implements OnInit{
     sidebarBtn.addEventListener("click", ()=>{
       sidebar.classList.toggle("close");
     });
-    }, 2000);
+    }, 250);
   }
 
   async ngOnInit(): Promise<void> {
     this.parametersList = await lastValueFrom(this.httpService.getParameters());  
     for(let i=0; i<this.parametersList.parameters.length; i++){
       this.parameterNames.push(this.parametersList.parameters[i].name);
-      qualifiedParameterNames.push(this.parametersList.parameters[i].name);
+      parameterNames.push(this.parametersList.parameters[i].name);
       let regexName = this.parametersList.parameters[i].qualifiedName.match(/ *\/[^/]*\/ */g); //gets the file's name e.g. /pus/ as a regexp so it needs to get converted to a string below
       let fileName = <string>regexName?.toString();
       if(!this.fileNames.includes(fileName)){
@@ -68,7 +66,7 @@ export class SidenavComponent implements OnInit{
   * If it is, we are displaying a notification to the user, saying that the graph 
   * already exists.
   * 
-  * @param qualifiedName = the qualified name of the parameter we're requesting
+  * @param qualifiedName the qualified name of the parameter we're requesting
   */
 
   addGraph(qualifiedName: string): void{
@@ -78,15 +76,6 @@ export class SidenavComponent implements OnInit{
     }else{
       this.notifService.notification$.next("Graph already exists");
     }
-  }
-
-  /*
-    Used to change the view between the graphs and the ArchiveTelemetryComponent 
-    by changing a boolean variable that's used inside the according ngIfs
-  */
-
-  changeView(change: boolean){
-    this.dataService.changeView(change);
   }
   
 }

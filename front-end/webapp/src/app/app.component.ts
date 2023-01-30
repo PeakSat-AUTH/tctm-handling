@@ -16,8 +16,8 @@ export class AppComponent {
   constructor(private wss:WebsocketService, 
     private notificationService: NotificationService,
     private snackBar: MatSnackBar, 
-    private router: Router,
-    private dataService: DataserviceService) { 
+    private router: Router
+    ) { 
     this.notificationService.notification$.subscribe(message => {
       this.snackBar.open(message, "OK",{ duration: 3000});
     });
@@ -36,9 +36,5 @@ export class AppComponent {
 
     ngOnInit(): void {
       this.wss.newConnection();
-    }
-
-    changeView(){
-      this.dataService.changeView(true);
     }
 }

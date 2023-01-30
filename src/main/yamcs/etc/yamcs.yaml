@@ -18,6 +18,8 @@ instances:
 # This is used to provide cryptographic signing.
 secretKey: changeme
 
+#Change the static root according to where you've cloned the yamcs repo on your computer
+
 yamcs-web:
   staticRoot: "/yamcs-instance/front-end/webapp/dist/opsmci/"
 

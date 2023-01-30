@@ -1,22 +1,21 @@
 import { Component, HostListener, Input, OnInit } from "@angular/core";
-import { async, lastValueFrom, Subscription } from "rxjs";
-import { Sample } from "src/app/ArchiveParameters";
-import { archiveData, newArchiveGraphs } from "src/app/GraphData";
+import { lastValueFrom, Subscription } from "rxjs";
+import { Sample } from "src/app/Interfaces/ArchiveParameters";
+import { archiveData } from "src/app/Interfaces/GraphData";
 import { DataserviceService } from "src/app/services/dataservice.service";
 import { HttpService } from "src/app/services/http.service";
-import { deleteArchiveGraph } from "src/app/GraphData";
+import { deleteArchiveGraph } from "src/app/Interfaces/GraphData";
 import { SharedgraphserviceService } from "src/app/services/sharedgraphservice.service";
 import { TelemetryService } from "src/app/services/telemetry.service";
-import { EnumValue, ParameterInfo } from "src/app/ListParameterResponse";
-import { Range, Ranges } from "src/app/Ranges";
-import { archiveGraphNames } from "src/app/GraphData";
+import { EnumValue, ParameterInfo } from "src/app/Interfaces/ListParameterResponse";
+import { Ranges } from "src/app/Interfaces/Ranges";
+import { archiveGraphNames } from "src/app/Interfaces/GraphData";
 @Component({
   selector: "app-archive-graph",
   templateUrl: "./archive-graph.component.html",
   styleUrls: ["./archive-graph.component.css"],
 })
 export class ArchiveGraphComponent implements OnInit {
-  @Input() Graphs: any[] = [];
   archiveData: any[] = archiveData;
   samples: Sample[] = [];
   data: JSON[] = [];

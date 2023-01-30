@@ -1,13 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { TimeSeries } from "../ArchiveParameters";
-import { ListParametersResponse } from "../ListParameterResponse";
-import { Ranges } from "../Ranges";
-
+import { TimeSeries } from "../Interfaces/ArchiveParameters";
+import { ListParametersResponse } from "../Interfaces/ListParameterResponse";
+import { Ranges } from "../Interfaces/Ranges";
 @Injectable({
   providedIn: "root",
 })
+
+/**
+ * Responsible for sending http requests to yamcs
+ */
+
 export class HttpService {
   private apiUrl = "http://localhost:8090/api/mdb/AcubeSAT/parameters/?limit=108"; //by inscreasing the limit, we get the /yamcs/ parameters, which dont work with the current sidenav implementation
   private archiveUrl = "http://localhost:8090/api/archive/AcubeSAT/parameters";
@@ -15,9 +19,10 @@ export class HttpService {
 
   constructor(private http: HttpClient) {}
 
-  /*
-    Returns an observable of the list of the parameters that yamcs contains 
-  */
+  /**
+   * 
+   * @returns an observable of the list of the parameters that yamcs contains 
+   */
 
   getParameters(): Observable<ListParametersResponse>{
     return this.http.get<ListParametersResponse>(this.apiUrl); 

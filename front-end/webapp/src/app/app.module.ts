@@ -16,7 +16,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { GraphItemComponent } from "./components/graph-item/graph-item.component";
 import { HttpService } from "./services/http.service";
 import { TelemetryComponent } from "./components/telemetry/telemetry.component";
-import { RouterModule, Routes } from "@angular/router";
+import { RouteReuseStrategy, RouterModule, Routes } from "@angular/router";
 import { ArchiveGraphComponent } from "./components/archive-graph/archive-graph.component";
 import { ArchiveTelemetryComponent } from "./components/archive-telemetry/archive-telemetry.component";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -24,7 +24,6 @@ import { ReactiveFormsModule } from "@angular/forms";
 import {
   NgxMatDatetimePickerModule,
   NgxMatNativeDateModule,
-  NgxMatTimepickerModule,
 } from "@angular-material-components/datetime-picker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -33,16 +32,13 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { AddGraphDirective } from './components/graphs/add-graph.directive';
 import { ArchiveGraphDirective } from './components/graphs/archive-graph.directive';
-import { ArchiveTelemetryDirective } from './components/graphs/archive-telemetry.directive';
+import { CustomRouteReuseStrategy } from "./Route Reusal/custom-route-reuse-strategy.service";
+import { APP_BASE_HREF } from "@angular/common";
 
 
 const appRoutes: Routes = [
-  {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "",
-  },
-  { path: "telemetry", component: TelemetryComponent },
+  { path: "", pathMatch: "full", redirectTo: ""},
+  { path: "telemetry-table", component: TelemetryComponent },
   { path: "archive-telemetry", component: ArchiveTelemetryComponent },
   { path: "graphs", component: GraphsComponent },
 ];
@@ -59,7 +55,6 @@ const appRoutes: Routes = [
     ArchiveTelemetryComponent,
     AddGraphDirective,
     ArchiveGraphDirective,
-    ArchiveTelemetryDirective,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +82,22 @@ const appRoutes: Routes = [
     GraphsComponent,
     HttpService,
     MatDatepickerModule,
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomRouteReuseStrategy
+    },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: () => {
+        // base href is set in index.html so that it can be applied
+        // for loading static resources. Here we derive APP_BASE_HREF
+        // from it (keep context path, but remove static path).
+        // This is the value used by Angular Router where we don't
+        // want to see the static prefix.
+        const baseEl = document.getElementsByTagName('base')[0];
+        return baseEl.getAttribute('href')?.replace('static/', '');
+      }
+    },
   ],
   bootstrap: [AppComponent],
 })

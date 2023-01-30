@@ -5,7 +5,7 @@ import {
   Series,
   callMatchingMap,
   calls,
-} from "src/app/GraphData";
+} from "src/app/Interfaces/GraphData";
 
 @Injectable({
   providedIn: "root",
@@ -59,10 +59,8 @@ export class WebsocketService {
 
   /**
    * Listens to the websocket connection for messages and parses the data.
-   *
-   * @returns a json observable
    */
-  listen() {
+  listen(): void {
     var time: string;
     var callNumber: number = 0
     /**
@@ -70,8 +68,6 @@ export class WebsocketService {
      */
     this.socket.onmessage = function (event) {
       var yamcsReply = JSON.parse(event.data);
-      console.log(yamcsReply);
-
       if (yamcsReply.type == "parameters") {
         /**
          * Checks if the call exists in the map.
@@ -114,6 +110,7 @@ export class WebsocketService {
               call: yamcsReply.call,
               isOfType: isOfType,
               value: series,
+              type : engineeringType,
             };
 
             graphData.next(currentData);

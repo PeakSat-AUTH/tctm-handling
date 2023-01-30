@@ -1,4 +1,5 @@
-import { Subject } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
+import { DataSourceType, NamedObjectId, ParameterTypeInfo, UsedByInfo } from './ListParameterResponse';
 
 /**
  * Needs refinement
@@ -15,8 +16,9 @@ export var parameterEngTypes:string[]=[];
 export var archiveGraphNames: string[] = [];
 export var calls:number[]=[];
 export var createdRealTimeGraphsQualifiedNames: string[] = [];
-export var qualifiedParameterNames: string[] = [];  //storing the qualified names of the parameters inside the sidenav
+export var parameterNames: string[] = [];  //storing the names of the parameters inside the sidenav
 export var callMatchingMap = new Map<number,string>(); //matches the key = qualifiedParam name to the according websoscket call
+export var qualifiedParameterNamesList: string[] = []; //storing the qualified names of the parameters inside the sidenav
 
 export interface GraphData {
     type: string;
@@ -34,6 +36,7 @@ export interface UpdateSeries {
     call: number;
     isOfType: boolean;
     value: Series;
+    type: string;
 }
 
 

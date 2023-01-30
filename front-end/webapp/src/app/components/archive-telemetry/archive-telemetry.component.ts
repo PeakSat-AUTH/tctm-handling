@@ -1,32 +1,17 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import { ParameterInfo, pusNameList } from "src/app/ListParameterResponse";
+import { ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import { ParameterInfo } from "src/app/Interfaces/ListParameterResponse";
 import { TelemetryService } from "src/app/services/telemetry.service";
-import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { DataSource } from "@angular/cdk/collections";
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  FormBuilder,
-  Validators,
-} from "@angular/forms";
+import { FormGroup, FormBuilder,Validators } from "@angular/forms";
 import { DataserviceService } from "src/app/services/dataservice.service";
-import { GraphsComponent } from "../graphs/graphs.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { HttpClient } from "@angular/common/http";
-import { Sample, TimeSeries } from "src/app/ArchiveParameters";
-import { async, lastValueFrom } from "rxjs";
-import { ParameterValue } from "src/app/ParameterHistory";
+import { Sample, TimeSeries } from "src/app/Interfaces/ArchiveParameters";
+import { lastValueFrom } from "rxjs";
+import { ParameterValue } from "src/app/Interfaces/ParameterHistory";
 import { MatStepper } from "@angular/material/stepper";
-import { timeValidation } from "../../validators/time-validation";
+import { timeValidation, validationStart, validationStop } from "../../validators/time-validation";
 import { SharedgraphserviceService } from "src/app/services/sharedgraphservice.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-archive-telemetry",
@@ -63,29 +48,37 @@ export class ArchiveTelemetryComponent implements OnInit {
   public currentFolder: string = "";
   private samplesData!: TimeSeries;
 
-  archiveTelemetryForm = this.fb.group(
-    {
-      start: ["", Validators.required], //more validators required
-      stop: ["", Validators.required],
-      count: ["", Validators.required],
-    },
-    { validator: timeValidation }
-  );
+  archiveTelemetryForm!: FormGroup;
+
+  graphsLink: string = "";
 
   constructor(
     private telemetryService: TelemetryService,
     private fb: FormBuilder,
     private dataservice: DataserviceService,
-    private graphs: GraphsComponent,
+    private router: Router,
     private snackBar: MatSnackBar,
-    private cdRef: ChangeDetectorRef, 
+    private cdRef: ChangeDetectorRef,
     private sharedService: SharedgraphserviceService
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    // let data = await lastValueFrom(
-    //   this.telemetryService.getTelemetryResponse()
-    // );
+    /**
+     * we create the formbuilder group wich will be bined with our input fields for start, stop time and count
+     */
+    this.archiveTelemetryForm = this.fb.group(
+      {
+        start: ["", [Validators.required]],
+        stop: ["", [Validators.required]],
+        count: ["", Validators.required],
+      },
+      { validator: [timeValidation] }
+    );
+
+    /**
+     * we bring the data from the telemetry folders
+     * this happends asynchronously since we want to wait for all the data to come and then move to the next function
+     */
     let acubeSAT = await lastValueFrom(
       this.telemetryService.getAcubeSATTelemetryResponse()
     );
@@ -102,6 +95,9 @@ export class ArchiveTelemetryComponent implements OnInit {
     let yamcsData = await lastValueFrom(
       this.telemetryService.getYamcsTelemetryResponse()
     );
+    /**
+     * we add all the data to one variable
+     */
     this.parameterasync = this.parameterasync.concat(
       acubeSAT.parameters,
       pus.parameters,
@@ -117,7 +113,10 @@ export class ArchiveTelemetryComponent implements OnInit {
       (message) => (this.qualifiedName = message)
     );
   }
-  async logRowData(row: any, stepper: MatStepper) {
+  async logRowData(row: any, stepper: MatStepper): Promise<void> {
+    /**
+     * TO DO : add description for the function
+     */
     this.dataservice.changeParameterName(row.qualifiedName);
 
     this.cdRef.detectChanges();
@@ -125,21 +124,29 @@ export class ArchiveTelemetryComponent implements OnInit {
     this.qualifiedName = row.qualifiedName;
     console.log(this.qualifiedName);
     this.telemetryService.changeSample(this.qualifiedName);
-    try{
+    try {
       this.samplesData = await lastValueFrom(
-      this.telemetryService.getSamplesValueResponse()
+        this.telemetryService.getSamplesValueResponse()
       );
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
     this.asyncTimeArray = this.samplesData.sample;
     if (this.asyncTimeArray == undefined) {
       window.alert("This telemetry has no samples. Please pick another one");
-      /* here needs implementation for starthint and stophint  */
     } else {
       this.secondStep = true;
       this.starthint = this.asyncTimeArray[0].time;
       this.stophint = this.asyncTimeArray[this.asyncTimeArray.length - 1].time;
+
+      this.archiveTelemetryForm
+        .get("start")!
+        .setValidators(validationStart(new Date(this.starthint)));
+      this.archiveTelemetryForm.get("start")!.updateValueAndValidity();
+      this.archiveTelemetryForm
+        .get("stop")!
+        .setValidators(validationStop(new Date(this.stophint)));
+      this.archiveTelemetryForm.get("stop")!.updateValueAndValidity();
     }
 
     let historyData = await lastValueFrom(
@@ -151,33 +158,52 @@ export class ArchiveTelemetryComponent implements OnInit {
     stepper.next();
   }
 
-  logFolderRowData(row: any, stepper: MatStepper) {
+  logFolderRowData(row: any, stepper: MatStepper): void {
+    /**
+     * we take the folder that we picked from the 1st step
+     */
     this.currentFolder = row;
     console.log(this.currentFolder);
     this.pickCorrectFolder(row, stepper);
   }
 
-  backNavigation() {
+  backNavigation(): void {
+    /**
+     * we go back to the 1st step and empty our arrays
+     */
     this.firstStep = false;
 
     this.parameterasyncName = [];
     this.currentFolder = "";
   }
 
-  backToparameter() {
+  backToparameter(): void {
+    /**
+     * we go back to the second step
+     */
+
     this.secondStep = false;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.dataservice.changeQueries(
       this.archiveTelemetryForm.get(["start"])!.value,
       this.archiveTelemetryForm.get(["stop"])!.value,
       this.archiveTelemetryForm.get(["count"])!.value
     );
-    this.addArchiveGraph();
+    this.sharedService.makeArchiveGraphPublish();
+    setTimeout(() => {
+      this.router.navigate(['/graphs']);
+    }, 150);
   }
 
-  pickCorrectFolder(row: any, stepper: MatStepper) {
+
+  pickCorrectFolder(row: any, stepper: MatStepper): void {
+    /**
+     * we pick the folder from logRowData and we populaet our variables with the correct telemetries
+     * we tell the app to detect the changes that we've made in order to see that the 1st step is true now
+     */
+
     this.parameterasyncName = [];
     this.firstStep = true;
     this.cdRef.detectChanges(); // trigger the change detection manually to apply the completed state to the first step, which allows the stepper to move to the next step
@@ -189,11 +215,21 @@ export class ArchiveTelemetryComponent implements OnInit {
         );
       }
     }
+    /**
+     * the table data source is used for the search field in the 2nd step */
     this.tableDataSource = new MatTableDataSource(this.parameterasyncName);
+    console.log(this.parameterasyncName);
+    /**
+     * we tell the stepper to move (first step is true now)
+     */
     stepper.next();
   }
 
   isYamcs(folder: string): boolean {
+    /**
+     * checks if the folder we have picked is the Yamcs one
+     * this is still under contruction due to errors with the type of some telemetries in this folder
+     */
     if (folder == "yamcs") {
       return true;
     } else {
@@ -201,26 +237,19 @@ export class ArchiveTelemetryComponent implements OnInit {
     }
   }
 
-  // pickCorrectSamples(stepper: MatStepper) {
-  //   this.starthint = this.asyncTimeArray[0].time;
-  //   this.stophint = this.asyncTimeArray[this.asyncTimeArray.length - 1].time; // this.historyParameter[0].generationTime;
-  //   stepper.next();
-  // }
-
-  // changeStartStopTime() {
-
-  // }
-
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
+    /**
+     * this is the filter for the search input in the 2nd step
+     */
     const filterValue = (event.target as HTMLInputElement).value;
     this.tableDataSource.filter = filterValue.trim().toLowerCase();
   }
-  addArchiveGraph(): void {
-    this.dataservice.changeView(true);
-    this.sharedService.makeArchiveGraphPublish();
-  }
-
-  changeToCorrectTime() {
+  
+  changeToCorrectTime(): void {
+    /**
+     * we implement some window alerts in order for the user to know why theres been an error with the time or count values that he enters
+     * also we patch our values to become JSON strings
+     */
     if (
       this.archiveTelemetryForm.get("stop")!.value == "" ||
       this.archiveTelemetryForm.get("start")!.value == "" ||
@@ -255,13 +284,19 @@ export class ArchiveTelemetryComponent implements OnInit {
     }
   }
 
-  backToTime() {
+  backToTime(): void {
+    /**
+     * this function is called when we go back to the 3rd step
+     */
     this.archiveTelemetryForm.get("start")!.patchValue("");
     this.archiveTelemetryForm.get("stop")!.patchValue("");
     this.archiveTelemetryForm.get("count")!.patchValue("");
   }
 
-  openSnackBar(message: string, action: string | undefined) {
+  openSnackBar(message: string, action: string | undefined): void {
+    /**
+     * this is the help button in the 3rd step
+     */
     this.snackBar.open(message, action, {
       duration: 5000,
       panelClass: ["black-snackbar"], // color of snackbar

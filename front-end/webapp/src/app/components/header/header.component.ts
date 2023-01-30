@@ -13,9 +13,9 @@ export class HeaderComponent implements OnInit {
   }
 
   // renders the correct name in the div tag 
-  name="Spacecraft Operations"; 
+  name: string="Spacecraft Operations"; 
 
-  getName(){
+  getName(): string{
     if(!this.name)
     {
       this.name="username";

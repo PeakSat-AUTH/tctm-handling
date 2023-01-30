@@ -1,12 +1,16 @@
-import { HttpClient, HttpRequest } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, EMPTY, map, Observable } from "rxjs";
-import { TimeSeries } from "../ArchiveParameters";
+
+import {
+  BehaviorSubject,
+  Observable,
+} from "rxjs";
+import { TimeSeries } from "../Interfaces/ArchiveParameters";
 import {
   ListParametersResponse,
   ParameterInfo,
-} from "../ListParameterResponse";
-import { ListParameterHistoryResponse } from "../ParameterHistory";
+} from "../Interfaces/ListParameterResponse";
+import { ListParameterHistoryResponse } from "../Interfaces/ParameterHistory";
 
 @Injectable({
   providedIn: "root",
@@ -70,7 +74,7 @@ export class TelemetryService {
     return this.http.get<ListParameterHistoryResponse>(this.historyUrl);
   }
 
-  changeSample(message: string) {
+  changeSample(message: string): void {
     this.sampleSource.next(message);
     this.samplesUrl = "";
     this.historyUrl = "";
@@ -88,7 +92,7 @@ export class TelemetryService {
     });
   }
 
-  telemetryValuesEnum(message: string) {
+  telemetryValuesEnum(message: string): void {
     this.telemetryValSource.next(message);
     this.telemetryEnum = "";
     this.telemetryValSource.subscribe((data) => {

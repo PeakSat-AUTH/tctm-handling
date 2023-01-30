@@ -1,5 +1,5 @@
 import { Directive, ViewContainerRef } from '@angular/core';
-import { callMatchingMap, calls, createdRealTimeGraphsQualifiedNames } from 'src/app/GraphData';
+import { callMatchingMap, calls, createdRealTimeGraphsQualifiedNames } from 'src/app/Interfaces/GraphData';
 import { GraphItemComponent } from '../graph-item/graph-item.component';
 import { SharedgraphserviceService } from 'src/app/services/sharedgraphservice.service';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,10 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 @Directive({
   selector: '[appAddGraph]'
 })
+
+/**
+ * Responsible for the creation/deletion of the graph-item.component
+ */
 
 export class AddGraphDirective{
 clickEventsubscription !: Subscription;
@@ -31,7 +35,7 @@ constructor(public viewContainerRef: ViewContainerRef, private sharedService: Sh
  * @param qualifiedName = the parameter's qualified name
  */
 
-makeGraph(qualifiedName: string){
+makeGraph(qualifiedName: string): void{
   const graphitem = this.viewContainerRef.createComponent(GraphItemComponent);
   graphitem.instance.qualifiedName = qualifiedName;
   createdRealTimeGraphsQualifiedNames.push(graphitem.instance.qualifiedName);
@@ -48,7 +52,7 @@ makeGraph(qualifiedName: string){
  * @param qualifiedName = the parameter's qualified name
  */
 
-deleteGraph(qualifiedName: string){
+deleteGraph(qualifiedName: string): void{
   let index = createdRealTimeGraphsQualifiedNames.findIndex((specificQualifiedName: string) => specificQualifiedName == qualifiedName);
   this.viewContainerRef.remove(index);
   createdRealTimeGraphsQualifiedNames.splice(index,1);

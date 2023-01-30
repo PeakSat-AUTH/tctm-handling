@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { callMatchingMap, ngxData } from "src/app/GraphData";
+import { callMatchingMap, ngxData } from "src/app/Interfaces/GraphData";
 import { SharedgraphserviceService } from 'src/app/services/sharedgraphservice.service';
-import { graphData } from "src/app/GraphData";
+import { graphData } from "src/app/Interfaces/GraphData";
 
 @Component({
   selector: 'app-graph-item',
@@ -43,7 +43,7 @@ export class GraphItemComponent implements OnInit{
     this.subscription = graphData.subscribe(data => {
         if(this.qualifiedName == callMatchingMap.get(data.call)){
           this.isOfType = data.isOfType;
-          this.results.data[0].series.push(data.value); 
+          this.results.data[0].series.push(data.value);
           this.results.data = [...this.results.data];
           this.currentValue = data.value.value;
         }
@@ -84,7 +84,7 @@ export class GraphItemComponent implements OnInit{
  * to remove the viewRef of the component, by searching
  * for its index, inside a qualifiedNames array. 
  * 
- * @param qualifiedName = the parameter's qualified name
+ * @param qualifiedName the parameter's qualified name
  * 
  */
 

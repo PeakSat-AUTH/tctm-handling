@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { EnumValue } from "../ListParameterResponse";
+import { EnumValue } from "../Interfaces/ListParameterResponse";
 @Injectable({
   providedIn: "root",
 })
@@ -22,21 +22,17 @@ export class DataserviceService {
 
   constructor() {}
 
-  changeQueries(start: string, stop: string, count: string) {
+  changeQueries(start: string, stop: string, count: string): void {
     this.start.next(start);
     this.stop.next(stop);
     this.count.next(count);
   }
   
-  changeParameterName(name: string) {
+  changeParameterName(name: string): void {
     this.parameterName.next(name);
   }
 
-  changeView(ngif: boolean) {
-    this.ngIF.next(ngif);
-  }
-
-  checkEnumMap(message: EnumValue[]) {
+  checkEnumMap(message: EnumValue[]): void {
     this.enumVal.next(message);
     for (let i = 0; i < message.length; i++) {
       if (this.enumaratedMap.has(message[i].label) == false) {

@@ -68,6 +68,73 @@
             <Parameter parameterTypeRef="/base/uint64_t" name="ADCSSystick" />
             <Parameter parameterTypeRef="/base/uint16_t" name="ADCSBootCounter" />
 
+
+<!--     SU Parameters will be used in the Environmental Campaign       -->
+            <Parameter parameterTypeRef="/base/float_t" name="SUPCBTemperature1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPCBTemperature2"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPCBTempControlValves"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPCBTempFlowValves"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPDMSTemperature"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUGrowthMediumTemperature"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SULED1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SULED2"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SULED3"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SULED4"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPressureLevel1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPressureLevel2"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel2"></Parameter>
+            <Parameter parameterTypeRef="/base/uint16_t" name="SUNumberOfPhotos"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPumpFlow1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPumpFlow2"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlChamberValve1"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlChamberValve2"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlChamberValve3"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlSandwitchValve1"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlSandwitchValve2"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUControlSandwitchValve3"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveInlet1"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveInlet2"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveInlet3"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveOutlet1"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveOutlet2"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveOutlet3"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveTest1"></Parameter>
+            <Parameter parameterTypeRef="/base/bool_t" name="SUFlowValveTest2"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUPhotoExposureTime"></Parameter>
+            <Parameter parameterTypeRef="/base/uint16_t" name="SUPhotoInterval"></Parameter>
+
+            <Parameter parameterTypeRef="/dt/SUPhotoCroppedResolution_t" name="SUPhotoCroppedResolution"></Parameter>
+            <Parameter parameterTypeRef="/dt/SUExperimentNo_t" name="SUExperimentNo"></Parameter>
+            <Parameter parameterTypeRef="/dt/SUCameraTemperature_t" name="SUCameraTemperature"></Parameter>
+
+            <Parameter parameterTypeRef="/base/float_t" name="SUMCUTemperature"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUMCUInputVoltage"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUMCUBootCount"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUSFLASHInt"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUSFLASH"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUSSRAM"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUSMCUTime"></Parameter>
+
+            <Parameter parameterTypeRef="/dt/SUNANDMemoryPartition_t" name="SUNANDMemoryPartition"></Parameter>
+
+            <Parameter parameterTypeRef="/base/uint16_t" name="SULastFailedEvent"></Parameter>
+            <Parameter parameterTypeRef="/base/uint32_t" name="SUMCUSystick"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUNANDFLASHLCLThreshold"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUFlowPumpFLASHLCLThreshold"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUControlPumpFLASHLCLThreshold"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUCameraLCLThreshold"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUNANDFLASHLCLOn"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUFlowPumpFLASHLCLOn"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUControlPumpFLASHLCLOn"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUCameraOn"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUNANDFLASHScrubbingFrequency"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SURAMScrubbingFrequency"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUProgramFLASHScrubbingFrequency"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel1"></Parameter>
+            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel2"></Parameter>
+
+
         </ParameterSet>
     </TelemetryMetaData>
 

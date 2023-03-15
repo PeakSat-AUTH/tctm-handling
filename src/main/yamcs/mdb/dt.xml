@@ -181,6 +181,107 @@
             </EnumeratedParameterType>
             
 
+
+<!--    SU ENUMS    -->
+            <EnumeratedParameterType name="SUPhotoCroppedResolution_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="16"/>
+                <EnumerationList>
+                    <Enumeration value="33" label="ADCSMagnetometerISISCalibratedX"/>
+                    <Enumeration value="34" label="ADCSMagnetometerISISCalibratedY"/>
+                    <Enumeration value="35" label="ADCSMagnetometerISISCalibratedZ"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="SUExperimentNo_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits=""/>
+                <EnumerationList>
+                    <Enumeration value="0" label="EPSRailCurrent1"/>
+                    <Enumeration value="1" label="EPSRailCurrent2"/>
+                    <Enumeration value="2" label="EPSRailCurrent3"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="SUCameraTemperature_t">
+                <IntegerDataEncoding encoding="" sizeInBits=""/>
+                <EnumerationList>
+                    <Enumeration value="6" label="EPSPanelTemperatureXPlus"/>
+                    <Enumeration value="7" label="EPSPanelTemperatureXMinus"/>
+                    <Enumeration value="8" label="EPSPanelTemperatureYPlus"/>
+                    <Enumeration value="9" label="EPSPanelTemperatureYMinus"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="SUNANDMemoryPartition_t">
+                <IntegerDataEncoding encoding="" sizeInBits=""/>
+                <EnumerationList>
+                    <Enumeration value="0" label="Memory"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="AllSUParameters">
+                <EnumerationList>
+                    <Enumeration value="4000" label="SUPCBTemperature1"/>
+                    <Enumeration value="4001" label="SUPCBTemperature2"/>
+                    <Enumeration value="4002" label="SUPCBTempControlValves"/>
+                    <Enumeration value="4003" label="SUPCBTempFlowValves"/>
+                    <Enumeration value="4004" label="SUPDMSTemperature"/>
+                    <Enumeration value="4005" label="SUGrowthMediumTemperature"/>
+                    <Enumeration value="4006" label="SULED1"/>
+                    <Enumeration value="4007" label="SULED2"/>
+                    <Enumeration value="4008" label="SULED3"/>
+                    <Enumeration value="4009" label="SULED4"/>
+                    <Enumeration value="4010" label="SUPressureLevel1"/>
+                    <Enumeration value="4011" label="SUPressureLevel2"/>
+                    <Enumeration value="4012" label="SUHumidityLevel1"/>
+                    <Enumeration value="4013" label="SUHumidityLevel2"/>
+                    <Enumeration value="4014" label="SUNumberOfPhotos"/>
+                    <Enumeration value="4015" label="SUPumpFlow1"/>
+                    <Enumeration value="4016" label="SUPumpFlow2"/>
+                    <Enumeration value="4017" label="SUControlChamberValve1"/>
+                    <Enumeration value="4018" label="SUControlChamberValve2"/>
+                    <Enumeration value="4019" label="SUControlChamberValve3"/>
+                    <Enumeration value="4020" label="SUControlSandwitchValve1"/>
+                    <Enumeration value="4021" label="SUControlSandwitchValve2"/>
+                    <Enumeration value="4022" label="SUControlSandwitchValve3"/>
+                    <Enumeration value="4023" label="SUFlowValveInlet1"/>
+                    <Enumeration value="4024" label="SUFlowValveInlet2"/>
+                    <Enumeration value="4025" label="SUFlowValveInlet3"/>
+                    <Enumeration value="4026" label="SUFlowValveOutlet1"/>
+                    <Enumeration value="4027" label="SUFlowValveOutlet2"/>
+                    <Enumeration value="4028" label="SUFlowValveOutlet3"/>
+                    <Enumeration value="4029" label="SUFlowValveTest1"/>
+                    <Enumeration value="4030" label="SUFlowValveTest2"/>
+                    <Enumeration value="4031" label="SUPhotoExposureTime"/>
+                    <Enumeration value="4032" label="SUPhotoInterval"/>
+                    <Enumeration value="4033" label="SUPhotoCroppedResolution"/>
+                    <Enumeration value="4035" label="SUExperimentNo"/>
+                    <Enumeration value="4037" label="SUCameraTemperature"/>
+                    <Enumeration value="4038" label="SUMCUTemperature"/>
+                    <Enumeration value="4039" label="SUMCUInputVoltage"/>
+                    <Enumeration value="4040" label="SUMCUBootCount"/>
+                    <Enumeration value="4041" label="SUSFLASHInt"/>
+                    <Enumeration value="4042" label="SUSFLASH"/>
+                    <Enumeration value="4043" label="SUSSRAM"/>
+                    <Enumeration value="4044" label="SUSMCUTime"/>
+                    <Enumeration value="4045" label="SUNANDMemoryPartition"/>
+                    <Enumeration value="4046" label="SULastFailedEvent"/>
+                    <Enumeration value="4047" label="SUMCUSystick"/>
+                    <Enumeration value="4048" label="SUNANDFLASHLCLThreshold"/>
+                    <Enumeration value="4049" label="SUFlowPumpFLASHLCLThreshold"/>
+                    <Enumeration value="4050" label="SUControlPumpFLASHLCLThreshold"/>
+                    <Enumeration value="4051" label="SUCameraLCLThreshold"/>
+                    <Enumeration value="4052" label="SUNANDFLASHLCLOn"/>
+                    <Enumeration value="4053" label="SUFlowPumpFLASHLCLOn"/>
+                    <Enumeration value="4054" label="SUControlPumpFLASHLCLOn"/>
+                    <Enumeration value="4055" label="SUCameraOn"/>
+                    <Enumeration value="4056" label="SUNANDFLASHScrubbingFrequency"/>
+                    <Enumeration value="4057" label="SURAMScrubbingFrequency"/>
+                    <Enumeration value="4058" label="SUProgramFLASHScrubbingFrequency"/>
+                    <Enumeration value="4059" label="SUHumidityLevel1"/>
+                    <Enumeration value="4060" label="SUHumidityLevel2"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
         </ParameterTypeSet>
     </TelemetryMetaData>
 

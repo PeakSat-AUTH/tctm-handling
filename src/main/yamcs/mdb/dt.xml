@@ -193,7 +193,7 @@
             </EnumeratedParameterType>
 
             <EnumeratedParameterType name="SUExperimentNo_t">
-                <IntegerDataEncoding encoding="unsigned" sizeInBits=""/>
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8"/>
                 <EnumerationList>
                     <Enumeration value="0" label="EPSRailCurrent1"/>
                     <Enumeration value="1" label="EPSRailCurrent2"/>
@@ -202,7 +202,7 @@
             </EnumeratedParameterType>
 
             <EnumeratedParameterType name="SUCameraTemperature_t">
-                <IntegerDataEncoding encoding="" sizeInBits=""/>
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="32"/>
                 <EnumerationList>
                     <Enumeration value="6" label="EPSPanelTemperatureXPlus"/>
                     <Enumeration value="7" label="EPSPanelTemperatureXMinus"/>
@@ -212,7 +212,7 @@
             </EnumeratedParameterType>
 
             <EnumeratedParameterType name="SUNANDMemoryPartition_t">
-                <IntegerDataEncoding encoding="" sizeInBits=""/>
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="16"/>
                 <EnumerationList>
                     <Enumeration value="0" label="Memory"/>
                 </EnumerationList>

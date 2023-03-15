@@ -131,8 +131,6 @@
             <Parameter parameterTypeRef="/base/float_t" name="SUNANDFLASHScrubbingFrequency"></Parameter>
             <Parameter parameterTypeRef="/base/float_t" name="SURAMScrubbingFrequency"></Parameter>
             <Parameter parameterTypeRef="/base/float_t" name="SUProgramFLASHScrubbingFrequency"></Parameter>
-            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel1"></Parameter>
-            <Parameter parameterTypeRef="/base/float_t" name="SUHumidityLevel2"></Parameter>
 
 
         </ParameterSet>

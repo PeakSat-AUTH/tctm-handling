@@ -14,7 +14,6 @@ import serial
 from cobs import cobs
 
 EXCLAMATION_MARK = 0x021
-HASH_TAG = 0x023
 SPACE = 0x020
 DELIMITER = b"\x00"
 TC_HEADER = 11
@@ -68,6 +67,7 @@ class Settings:
     yamcs_port_out: int
     obc_port_in: int
     adcs_port_in: int
+    canBus_port_in: int
     uart_serial_0: str
     usb_serial_0: str
     uart_serial_1: str
@@ -124,7 +124,9 @@ def connect_to_port(settings: Settings, port: int) -> socket:
 
 def mcu_client(
     settings: Settings,
+    type: ThreadType,
     serial_port: str = None,
+    yamcs_port_in: int = None,
 ):
     """
 
@@ -132,8 +134,8 @@ def mcu_client(
     It listens to the specified serial port for TM messages.
     They usually come in the following form:
     '1801 [debug    ]OBC New TM[3,25] message! 8 1 192 2 0 15 32 3 25 0 2 0 1 37 165 53 0 0 0 0 0 \n'
-    This string is split after the "!" or "#" depending on the subsystem, returning the actual packet.
-    All the bytes after that are sent to YAMCS to the corresponding subsystem port.
+    This string is split after the "!", returning the actual packet.
+    All the bytes after that are sent to YAMCS.
     If we try to convert the characters one by one from ASCII to integer, we will get something like:
     8 1 1 9 2 0 0 2 0 ... -> garbage
     So we need to parse a sequence of numbers as a single decimal.
@@ -143,15 +145,14 @@ def mcu_client(
     to parse the whole decimal.
     Note:
         If the debugging messages are altered, this script will have undetermined behavior, since
-        it relies on the existence of the exclamation mark "!" or the hastag "#" to detect actual TMs being sent.
+        it relies on the existence of the exclamation mark "!" to detect actual TMs being sent.
     """
-
+    if yamcs_port_in is None:
+        yamcs_port_in = settings.obc_port_in
     if serial_port is None:
         serial_port = settings.usb_serial_0
 
-
-    obcFileLogger = getFileLogger(ThreadType.OBC)
-    adcsFileLogger = getFileLogger(ThreadType.ADCS)
+    fileLogger = getFileLogger(type)
     while True:
 
         try:
@@ -170,23 +171,11 @@ def mcu_client(
                 message = cobs.decode(line)
                 # not using decode("utf-8") since it will break printing (all new line characters will result in an new line)
                 logging.info(f"{ser.name}: {message}")
+                fileLogger.info(message)
 
-
-                idx_obc = message.find(EXCLAMATION_MARK)
-                idx_adcs = message.find(HASH_TAG)
-
-                if idx_obc == -1 and idx_adcs ==-1:
+                idx = message.find(EXCLAMATION_MARK)
+                if idx == -1:
                     continue
-
-                if idx_obc != -1:
-                    yamcs_port_in = settings.obc_port_in
-                    idx = idx_obc
-                    obcFileLogger.info(message)
-
-                elif idx_adcs !=-1:
-                    yamcs_port_in = settings.adcs_port_in
-                    idx = idx_adcs
-                    adcsFileLogger.info(message)
 
                 raw_packet = message[idx + 2 :]
                 packet = bytearray()
@@ -217,48 +206,6 @@ def mcu_client(
             sleep(settings.reconnection_timeout)
         except socket.error as error:
             raise YAMCSClosedPortException(error)
-
-
-def mcu_client_logger(
-    settings: Settings,
-    type: ThreadType,
-    serial_port: str = None,
-):
-    """
-
-    It listens to the specified serial port for TM messages.
-    They usually come in the following form:
-    '1801 [debug    ]OBC New TM[3,25] message! 8 1 192 2 0 15 32 3 25 0 2 0 1 37 165 53 0 0 0 0 0 \n'
-    It simply logs these messages to a logfile.
-    """
-
-    fileLogger = getFileLogger(type)
-    while True:
-        try:
-            ser = serial.Serial(
-                serial_port,
-                baudrate=settings.baud_rate,
-                timeout=settings.serial_timeout,
-            )
-
-            # Read any messages already stored to the buffer.
-            # If YAMCS receives this, it's gonna fail and the script will produce a TCP exception.
-            ser.readline()
-
-            while True:
-                line = ser.readline()
-                message = cobs.decode(line)
-
-                fileLogger.info(message)
-
-
-        except serial.SerialException:
-            logging.warning(
-                "No device is connected at port "
-                + serial_port
-                + ". Please connect a device."
-            )
-            sleep(settings.reconnection_timeout)
 
 
 def sendIfConnected(packet: bytearray, settings: Settings, yamcs_port_in: int):
@@ -374,33 +321,37 @@ if __name__ == "__main__":
     yamcs_listener_thread = Thread(target=yamcs_client, args=(settings,))
     yamcs_listener_thread.start()
 
-    obc_adcs_serial_port = settings.usb_serial_0
-    adcs_logs_serial_port = settings.uart_serial_0
-    obc_logs_serial_port = settings.uart_serial_1
+    obc_serial_port = settings.usb_serial_0
+    adcs_serial_port = settings.uart_serial_0
+    can_serial_port = settings.uart_serial_1
 
-    obc_adcs_listener_thread = Thread(
+    obc_listener_thread = Thread(
         target=mcu_client,
         args=(
             settings,
-            obc_adcs_serial_port,
+            ThreadType.OBC,
+            obc_serial_port,
+            settings.obc_port_in,
         ),
-    ).start()
+    )
+    obc_listener_thread.start()
 
-    adcs_logger_thread = Thread(
-        target=mcu_client_logger,
+    adcs_listener_thread = Thread(
+        target=mcu_client,
         args=(
             settings,
             ThreadType.ADCS,
-            adcs_logs_serial_port,
+            adcs_serial_port,
+            settings.adcs_port_in,
         ),
     ).start()
 
-    obc_logger_thread = Thread(
-        target=mcu_client_logger,
+    can_listener_thread = Thread(
+        target=mcu_client,
         args=(
             settings,
-            ThreadType.OBC,
-            obc_logs_serial_port,
+            ThreadType.TELEMETRY,
+            can_serial_port,
+            settings.canBus_port_in,
         ),
     ).start()
-

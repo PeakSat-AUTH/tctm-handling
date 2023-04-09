@@ -72,6 +72,33 @@
                 </EnumerationList>
             </EnumeratedParameterType>
 
+            <EnumeratedParameterType name="event_ID">
+                <xtce:IntegerDataEncoding sizeInBits="16"/>
+                <xtce:EnumerationList>
+                    <Enumeration value="0" label="InformativeUnknownEvent"/>
+                    <Enumeration value="1" label="WWDGReset"/>
+                    <Enumeration value="2" label="AssertionFail"/>
+                    <Enumeration value="3" label="MCUStart"/>
+                    <Enumeration value="4" label="LowSeverityUnknownEvent"/>
+                    <Enumeration value="5" label="MediumSeverityUnknownEvent"/>
+                    <Enumeration value="6" label="HighSeverityUnknownEvent"/>
+                    <Enumeration value="7" label="FailedStartOfExecution"/>
+                </xtce:EnumerationList>
+            </EnumeratedParameterType>
+
+            <ArrayParameterType name="event_ID_array" arrayTypeRef="event_ID">
+                <xtce:DimensionList>
+                    <Dimension>
+                        <xtce:StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:StartingIndex>
+                        <xtce:EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:EndingIndex>
+                    </Dimension>
+                </xtce:DimensionList>
+            </ArrayParameterType>
+
             <IntegerParameterType name="structureId_t">
                 <IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
             </IntegerParameterType>
@@ -249,6 +276,36 @@
                     <Enumeration value="5024" label="OBCMRAMOn" />
                 </EnumerationList>
             </EnumeratedArgumentType>
+
+            <EnumeratedArgumentType name="event_ID">
+                <xtce:IntegerDataEncoding sizeInBits="16"/>
+                <xtce:EnumerationList>
+                    <Enumeration value="0" label="InformativeUnknownEvent"/>
+                    <Enumeration value="1" label="WWDGReset"/>
+                    <Enumeration value="2" label="AssertionFail"/>
+                    <Enumeration value="3" label="MCUStart"/>
+                    <Enumeration value="4" label="LowSeverityUnknownEvent"/>
+                    <Enumeration value="5" label="MediumSeverityUnknownEvent"/>
+                    <Enumeration value="6" label="HighSeverityUnknownEvent"/>
+                    <Enumeration value="7" label="FailedStartOfExecution"/>
+                </xtce:EnumerationList>
+            </EnumeratedArgumentType>
+
+            <ArrayArgumentType name="event_ID_array" arrayTypeRef="event_ID">
+                <xtce:DimensionList>
+                    <Dimension>
+                        <xtce:StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:StartingIndex>
+                        <xtce:EndingIndex>
+                            <DynamicValue>
+                                <xtce:ArgumentInstanceRef argumentRef="N" />
+                                <xtce:LinearAdjustment intercept="-1"/>
+                            </DynamicValue>
+                        </xtce:EndingIndex>
+                    </Dimension>
+                </xtce:DimensionList>
+            </ArrayArgumentType>
 
             <EnumeratedArgumentType name="writableFloatParameters_t">
                 <IntegerDataEncoding sizeInBits="16" />

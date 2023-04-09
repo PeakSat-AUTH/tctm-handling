@@ -100,6 +100,8 @@ mdb:
   spec: "mdb/report-values.xml"
 - type: xtce
   spec: "mdb/file-handling.xml"
+- type: xtce
+  spec: "mdb/event-report.xml"
 
 
 

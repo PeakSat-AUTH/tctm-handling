@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>AcubeSAT Mission Control</title>
-  <base href="/">
+  <base href="{{contextPath}}/static/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="style.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -16,6 +16,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
 </head>
 <body class="mat-typography">
+  <script id="appConfig" type="application/json">
+    {{ configJson }}
+  </script>
   <app-root></app-root>
 </body>
 </html>

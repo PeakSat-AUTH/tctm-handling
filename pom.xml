@@ -17,6 +17,7 @@
     Check https://mvnrepository.com/artifact/org.yamcs/yamcs-core
     -->
     <yamcsVersion>5.7.9</yamcsVersion>
+    <webdir>src/main/frontend/dist/opsmci</webdir>
   </properties>
 
   <dependencies>
@@ -46,6 +47,8 @@
 
   <build>
     <plugins>
+
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -56,22 +59,50 @@
       </plugin>
 
       <plugin>
+          <artifactId>exec-maven-plugin</artifactId>
+          <groupId>org.codehaus.mojo</groupId>
+          <version>1.6.0</version>
+          <executions>
+            <execution>
+              <id>npm install</id>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <phase>validate</phase>
+              <configuration>
+                <executable>npm</executable>
+                <arguments>
+                  <argument>install</argument>
+                </arguments>
+                <workingDirectory>src/main/frontend</workingDirectory>
+                <target>
+                  <echo message="Npm install" />
+                </target>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+
+      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.9.1</version>
         <configuration>
-          <nodeVersion>v14.16.1</nodeVersion>
-          <workingDirectory>src/main/webapp</workingDirectory>
+          <nodeVersion>v18.14.0</nodeVersion>
+          <workingDirectory>src/main/frontend</workingDirectory>
           <skip>${prodDockerBuild}</skip>
         </configuration>
         <executions>
           <execution>
+          <phase>initialize</phase>
             <id>install-npm</id>
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
           </execution>
           <execution>
+          <phase>initialize</phase>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
@@ -92,7 +123,7 @@
         <executions>
           <execution>
             <id>copy-resources</id>
-            <phase>validate</phase>
+            <phase>generate-sources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -100,10 +131,31 @@
               <outputDirectory>${basedir}/target/static</outputDirectory>
               <resources>
                 <resource>
-                  <directory>src/main/webapp/dist/opsmci</directory>
+                  <directory>${webdir}</directory>
                   <filtering>true</filtering>
                 </resource>
               </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <fileset id="webfiles" dir="${basedir}/target/frontend/static" />
+                <property name="prop.webfiles" refid="webfiles" />
+                <echo file="${basedir}/target/frontend/static/manifest.txt">${prop.webfiles}</echo>
+              </target>
             </configuration>
           </execution>
         </executions>

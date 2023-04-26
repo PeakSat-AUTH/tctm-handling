@@ -1,0 +1,65 @@
+<div class="webpage-container">
+  <app-header></app-header>
+  <mat-drawer-container class="body-container" autosize>
+    <mat-drawer #drawer class="sidenav-drawer" mode="side" opened="true">
+      <app-sidenav></app-sidenav>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="toggle-sidenav-drawer">
+        <!-- <button type="button" mat-button (click)="drawer.toggle()">
+          Toggle sidenav
+        </button> -->
+
+        <!-- <button mat-button routerLink="/telemetry" routerLinkActive>
+          Telemetry
+        </button> -->
+      </div>
+      <router-outlet></router-outlet>
+      <!-- <app-archive-telemetry></app-archive-telemetry> -->
+      <div *ngIf="this.homeUrl == true" class="welcome">
+        <h2 class="instructions">
+          Welcome to Operations App!
+          <mat-icon> rocket_launch</mat-icon>
+        </h2>
+      </div>
+
+      <div *ngIf="this.homeUrl == true" class="instance-button-group">
+        <div *ngIf="this.homeUrl == true">
+          <p class="instructions">Choose Instance To Load Data</p>
+        </div>
+        <div *ngIf="this.homeUrl == true" class="instance-buttons">
+          <button mat-raised-button (click)="onInstanceClick('OBC')">
+            OBC
+          </button>
+          <button mat-raised-button (click)="onInstanceClick('ADCS')">
+            ADCS
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="this.homeUrl == true" class="new_graphs">
+        <p class="instructions">
+          Open Dashboard in order to load new Graphs (real time & archived)
+        </p>
+        <mat-icon> switch_access_shortcut</mat-icon>
+      </div>
+
+      <div *ngIf="this.homeUrl == true" class="graphs" href="#">
+        <p class="instructions">
+          Press Graph button to show already active graphs
+        </p>
+        <mat-icon> south_east</mat-icon>
+      </div>
+
+      <button class="home" mat-button routerLink="">
+        <mat-icon>home</mat-icon>
+      </button>
+
+      <button class="graph" mat-button routerLink="/graphs" routerLinkActive (click)="changeView()">
+        <mat-icon> insights</mat-icon>
+      </button>
+
+      <div class="board"></div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

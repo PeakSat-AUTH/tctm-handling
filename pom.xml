@@ -59,32 +59,6 @@
       </plugin>
 
       <plugin>
-          <artifactId>exec-maven-plugin</artifactId>
-          <groupId>org.codehaus.mojo</groupId>
-          <version>1.6.0</version>
-          <executions>
-            <execution>
-              <id>npm install</id>
-              <goals>
-                <goal>exec</goal>
-              </goals>
-              <phase>validate</phase>
-              <configuration>
-                <executable>npm</executable>
-                <arguments>
-                  <argument>install</argument>
-                </arguments>
-                <workingDirectory>src/main/frontend</workingDirectory>
-                <target>
-                  <echo message="Npm install" />
-                </target>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-
-      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.9.1</version>
@@ -190,4 +164,57 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <activation>
+        <file>
+          <missing>frontend</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+          <artifactId>exec-maven-plugin</artifactId>
+          <groupId>org.codehaus.mojo</groupId>
+          <version>1.6.0</version>
+          <executions>
+            <execution>
+              <id>clone repo</id>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <phase>validate</phase>
+              <configuration>
+                <executable>git</executable>
+                <arguments>
+                  <argument>clone</argument>
+                  <argument>-b</argument>
+                  <argument>real-time-graphs</argument>
+                  <argument>https://gitlab.com/acubesat/ops/frontend-software.git</argument>
+                  <argument>src/main/frontend</argument>
+                </arguments>
+              </configuration>
+            </execution>
+            <execution>
+              <id>npm install</id>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <phase>validate</phase>
+              <configuration>
+                <executable>npm</executable>
+                <arguments>install</arguments>
+                <workingDirectory>src/main/frontend</workingDirectory>
+                <target>
+                  <echo message="Npm install" />
+                </target>
+              </configuration>
+            </execution>
+          </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

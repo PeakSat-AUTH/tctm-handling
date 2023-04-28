@@ -59,21 +59,21 @@
         </configuration>
         <executions>
           <execution>
-          <phase>initialize</phase>
+          <phase>validate</phase>
             <id>install-npm</id>
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
           </execution>
           <execution>
-            <phase>initialize</phase>
+            <phase>validate</phase>
             <id>npm install</id>
             <goals>
               <goal>npm</goal>
             </goals>
           </execution>
           <execution>
-          <phase>initialize</phase>
+          <phase>validate</phase>
             <id>build</id>
             <goals>
               <goal>npm</goal>
@@ -93,7 +93,7 @@
         <executions>
           <execution>
             <id>copy-resources</id>
-            <phase>validate</phase>
+            <phase>initialize</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -109,29 +109,26 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
+
+  <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.8</version>
+    <executions>
+        <execution>
             <id>generate-manifest</id>
-            <phase>validate</phase>
+            <phase>initialize</phase>
             <goals>
-              <goal>run</goal>
+                <goal>run</goal>
             </goals>
             <configuration>
-              <target>
-                <fileset id="webfiles" dir="${basedir}/target/webapp/static" />
-                <property name="prop.webfiles" refid="webfiles" />
-                <echo file="${basedir}/target/webapp/static/manifest.txt">${prop.webfiles}</echo>
-                <!-- <copy todir="${project.build.directory}/target/webapp/static/manifest.txt">
-                  <fileset dir="${project.basedir}/target/webapp/static"></fileset>
-                </copy> -->
-              </target>
+                <tasks>
+                    <fileset dir="${basedir}/target/webapp/static/" id="webfiles"></fileset>
+                    <echo file="${basedir}/target/webapp/static/manifest.txt" message="${toString:webfiles}" />
+                </tasks>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
+        </execution>
+    </executions>
+  </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -140,12 +137,6 @@
         <configuration>
           <release>11</release>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.yamcs</groupId>
-        <artifactId>yamcs-maven-plugin</artifactId>
-        <version>1.2.7</version>
       </plugin>
 
       <plugin>

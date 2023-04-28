@@ -17,7 +17,7 @@
     Check https://mvnrepository.com/artifact/org.yamcs/yamcs-core
     -->
     <yamcsVersion>5.7.9</yamcsVersion>
-    <webdir>src/main/frontend/dist/opsmci</webdir>
+    <webdir>src/main/frontend/webapp/dist/opsmci</webdir>
   </properties>
 
   <dependencies>
@@ -48,6 +48,90 @@
   <build>
     <plugins>
 
+    <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <configuration>
+          <nodeVersion>v18.14.0</nodeVersion>
+          <workingDirectory>src/main/frontend/webapp</workingDirectory>
+          <skip>${prodDockerBuild}</skip>
+        </configuration>
+        <executions>
+          <execution>
+          <phase>initialize</phase>
+            <id>install-npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <phase>initialize</phase>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+          </execution>
+          <execution>
+          <phase>initialize</phase>
+            <id>build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <skip>${prodDockerBuild}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/webapp/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${webdir}</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <fileset id="webfiles" dir="${basedir}/target/webapp/static" />
+                <property name="prop.webfiles" refid="webfiles" />
+                <echo file="${basedir}/target/webapp/static/manifest.txt">${prop.webfiles}</echo>
+                <!-- <copy todir="${project.build.directory}/target/webapp/static/manifest.txt">
+                  <fileset dir="${project.basedir}/target/webapp/static"></fileset>
+                </copy> -->
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -88,7 +172,7 @@
     </plugins>
   </build>
 
-  <profiles>
+  <!-- <profiles>
     <profile>
       <activation>
         <file>
@@ -205,5 +289,5 @@
         </plugins>
       </build>
     </profile>
-  </profiles>
+  </profiles> -->
 </project>

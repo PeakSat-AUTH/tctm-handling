@@ -1,0 +1,54 @@
+/*leaves space between elements  */
+div {
+  margin: 1rem;
+}
+
+/* next 2 work together to render the images correctly inside the toolbar */
+
+img {
+  height: 95%;
+  width: auto;
+}
+
+div.images {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* maybe useless for now but is used to not appear the underline in a tag */
+a {
+  text-decoration: none;
+}
+
+/* move the acubeSAT logo to the right */
+
+.acube {
+  margin: 1rem 0;
+  color: #2e98a3;
+  float: right; 
+  vertical-align: middle;
+  font-size: 17px;
+}
+
+.acube:hover{
+  cursor: default;
+  background-color: #252525;
+}
+
+.mat-icon {
+  color: #d59306;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+sup {
+  font-size: small;
+  color: #d59306;
+}

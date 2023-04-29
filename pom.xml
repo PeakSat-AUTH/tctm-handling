@@ -28,11 +28,11 @@
       <version>${yamcsVersion}</version>
     </dependency>
     <!-- Add this dependency to enable the web ui. -->
-    <!-- <dependency>
+    <dependency>
       <groupId>org.yamcs</groupId>
       <artifactId>yamcs-web</artifactId>
       <version>${yamcsVersion}</version>
-    </dependency> -->
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -48,7 +48,7 @@
   <build>
     <plugins>
 
-    <plugin>
+     <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.9.1</version>
@@ -84,6 +84,26 @@
           </execution>
         </executions>
       </plugin>
+      
+        <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+          <id>place root</id>
+          <phase>validate</phase>
+          <goals>
+            <goal>java</goal>
+          </goals>
+          <configuration>
+            <mainClass>gr.spacedot.acubesat.web_management.Deployer</mainClass>
+          </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+       <!--
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.2.0</version>
@@ -128,7 +148,7 @@
             </configuration>
         </execution>
     </executions>
-  </plugin>
+  </plugin> -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -162,123 +182,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <!-- <profiles>
-    <profile>
-      <activation>
-        <file>
-          <missing>src/main/frontend</missing>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-          <artifactId>exec-maven-plugin</artifactId>
-          <groupId>org.codehaus.mojo</groupId>
-          <version>1.6.0</version>
-          <executions>
-            <execution>
-              <id>clone repo</id>
-              <goals>
-                <goal>exec</goal>
-              </goals>
-              <phase>validate</phase>
-              <configuration>
-                <executable>git</executable>
-                <arguments>
-                  <argument>clone</argument>
-                  <argument>-b</argument>
-                  <argument>real-time-graphs</argument>
-                  <argument>https://gitlab.com/acubesat/ops/frontend-software.git</argument>
-                  <argument>src/main/frontend</argument>
-                </arguments>
-              </configuration>
-            </execution>
-          </executions>
-          </plugin>
-        <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.9.1</version>
-        <configuration>
-          <nodeVersion>v18.14.0</nodeVersion>
-          <workingDirectory>src/main/frontend</workingDirectory>
-          <skip>${prodDockerBuild}</skip>
-        </configuration>
-        <executions>
-          <execution>
-          <phase>initialize</phase>
-            <id>install-npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-          </execution>
-          <execution>
-            <phase>initialize</phase>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-          </execution>
-          <execution>
-          <phase>initialize</phase>
-            <id>build</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>run-script build</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
-        <configuration>
-          <skip>${prodDockerBuild}</skip>
-        </configuration>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/static</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${webdir}</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-manifest</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <fileset id="webfiles" dir="${basedir}/target/frontend/static" />
-                <property name="prop.webfiles" refid="webfiles" />
-                <echo file="${basedir}/target/frontend/static/manifest.txt">${prop.webfiles}</echo>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles> -->
 </project>

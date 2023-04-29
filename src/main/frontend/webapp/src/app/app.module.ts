@@ -38,6 +38,7 @@ import { TelecommandItemComponent } from './components/commanding/telecommand-it
 import { CreateTcItemDirective } from './components/commanding/telecommands/create-tc-item.directive';
 import { TelecommandResponseComponent } from './components/commanding/telecommand-response/telecommand-response.component';
 import { MatTooltip, MatTooltipModule } from "@angular/material/tooltip";
+import { APP_BASE_HREF } from "@angular/common";
 
 
 const appRoutes: Routes = [
@@ -99,7 +100,19 @@ const appRoutes: Routes = [
     {
       provide: RouteReuseStrategy,
       useClass: CustomRouteReuseStrategy
-    }
+    },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: () => {
+        // base href is set in index.html so that it can be applied
+        // for loading static resources. Here we derive APP_BASE_HREF
+        // from it (keep context path, but remove static path).
+        // This is the value used by Angular Router where we don't
+        // want to see the static prefix.
+        const baseEl = document.getElementsByTagName('base')[0];
+        return baseEl.getAttribute('href')?.replace('static/', '');
+      },
+    },
   ],
   bootstrap: [AppComponent],
 })

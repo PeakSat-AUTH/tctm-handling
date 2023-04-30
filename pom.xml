@@ -54,7 +54,7 @@
         <version>1.9.1</version>
         <configuration>
           <nodeVersion>v18.14.0</nodeVersion>
-          <workingDirectory>src/main/frontend/webapp</workingDirectory>
+          <workingDirectory>${basedir}/src/main/frontend/webapp</workingDirectory>
           <skip>${prodDockerBuild}</skip>
         </configuration>
         <executions>
@@ -102,53 +102,6 @@
           </execution>
         </executions>
       </plugin>
-
-       <!--
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
-        <configuration>
-          <skip>${prodDockerBuild}</skip>
-        </configuration>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/webapp/static</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${webdir}</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-  <plugin>
-    <artifactId>maven-antrun-plugin</artifactId>
-    <version>1.8</version>
-    <executions>
-        <execution>
-            <id>generate-manifest</id>
-            <phase>initialize</phase>
-            <goals>
-                <goal>run</goal>
-            </goals>
-            <configuration>
-                <tasks>
-                    <fileset dir="${basedir}/target/webapp/static/" id="webfiles"></fileset>
-                    <echo file="${basedir}/target/webapp/static/manifest.txt" message="${toString:webfiles}" />
-                </tasks>
-            </configuration>
-        </execution>
-    </executions>
-  </plugin> -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

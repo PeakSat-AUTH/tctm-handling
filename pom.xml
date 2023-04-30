@@ -17,7 +17,8 @@
     Check https://mvnrepository.com/artifact/org.yamcs/yamcs-core
     -->
     <yamcsVersion>5.7.9</yamcsVersion>
-    <webdir>src/main/frontend/webapp/dist/opsmci</webdir>
+    <webappDir>${basedir}/src/main/frontend/webapp</webappDir>
+    <buildDir>${basedir}/src/main/frontend/webapp/dist/opsmci</buildDir>
   </properties>
 
   <dependencies>
@@ -47,61 +48,6 @@
 
   <build>
     <plugins>
-
-     <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.9.1</version>
-        <configuration>
-          <nodeVersion>v18.14.0</nodeVersion>
-          <workingDirectory>${basedir}/src/main/frontend/webapp</workingDirectory>
-          <skip>${prodDockerBuild}</skip>
-        </configuration>
-        <executions>
-          <execution>
-          <phase>validate</phase>
-            <id>install-npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-          </execution>
-          <execution>
-            <phase>validate</phase>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-          </execution>
-          <execution>
-          <phase>validate</phase>
-            <id>build</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>run-script build</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      
-        <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-          <id>place root</id>
-          <phase>validate</phase>
-          <goals>
-            <goal>java</goal>
-          </goals>
-          <configuration>
-            <mainClass>gr.spacedot.acubesat.web_management.Deployer</mainClass>
-          </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -135,4 +81,73 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+    <id>handle-ops-frontend</id>
+    <activation>
+      <file>
+        <missing>${buildDir}</missing>
+      </file>
+    </activation>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>1.9.1</version>
+          <configuration>
+            <nodeVersion>v18.14.0</nodeVersion>
+            <workingDirectory>${webappDir}</workingDirectory>
+            <skip>${prodDockerBuild}</skip>
+          </configuration>
+          <executions>
+            <execution>
+            <phase>validate</phase>
+              <id>install-npm</id>
+              <goals>
+                <goal>install-node-and-npm</goal>
+              </goals>
+            </execution>
+            <execution>
+              <phase>validate</phase>
+              <id>npm install</id>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+            </execution>
+            <execution>
+            <phase>validate</phase>
+              <id>build</id>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <configuration>
+                <arguments>run-script build</arguments>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+    
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.0.0</version>
+          <executions>
+            <execution>
+            <id>place root</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <mainClass>gr.spacedot.acubesat.web_management.Deployer</mainClass>
+            </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+    </profile>
+  </profiles>
 </project>

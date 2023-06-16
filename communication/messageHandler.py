@@ -12,6 +12,7 @@ from time import sleep
 import yaml
 import serial
 from cobs import cobs
+from cobs.cobs import DecodeError
 
 EXCLAMATION_MARK = 0x021
 SPACE = 0x020
@@ -155,15 +156,33 @@ def mcu_client(settings: Settings, serial_port: str = None, yamcs_port_in: int =
 
             while True:
                 line = ser.readline()
-                message = cobs.decode(line)
+                try:
+                    message = cobs.decode(line)
+                except DecodeError:
+                    print("Cobs decode error!")
+                    continue
+                finally:
+                    pass
                 # not using decode("utf-8") since it will break printing (all new line characters will result in an new line)
                 logging.info(f"{ser.name}: {message}")
 
-                idx = message.find(EXCLAMATION_MARK)
-                if idx == -1:
+                idx_obc = message.find(EXCLAMATION_MARK)
+                idx_adcs = message.find(HASH_TAG)
+
+                if idx_obc == -1 and idx_adcs == -1:
                     continue
 
-                raw_packet = message[idx + 2 :]
+                if idx_obc != -1:
+                    yamcs_port_in = settings.obc_port_in
+                    idx = idx_obc
+                    obcFileLogger.info(message)
+
+                elif idx_adcs != -1:
+                    yamcs_port_in = settings.adcs_port_in
+                    idx = idx_adcs
+                    adcsFileLogger.info(message)
+
+                raw_packet = message[idx + 2:]
                 packet = bytearray()
                 packet_byte_decimal = 0
                 for packet_byte in raw_packet:
